@@ -1,4 +1,4 @@
-import { useGSAP, gsap, mediaQueries } from "@utils/gsap/gsap";
+import { useGSAP, gsap, mediaQueries, Observer } from "@utils/gsap/gsap";
 import { RefObject } from "react";
 
 export default function useCarouselAnimation({
@@ -7,12 +7,11 @@ export default function useCarouselAnimation({
   interval,
 }: {
   containerRef: RefObject<HTMLDivElement | null>;
-  listOfCards: string; //a class name of the card
+  listOfCards: string; // a class name of the card
   interval: number;
 }) {
   useGSAP(
     () => {
-      // for responsive animation on different screen sizes
       const mm = gsap.matchMedia();
 
       mm.add(mediaQueries, (context) => {
@@ -23,53 +22,95 @@ export default function useCarouselAnimation({
           listOfCards,
           containerRef.current,
         );
-
-        // uses timeline for better control on animation
-        const tl = gsap.timeline();
+        if (banners.length === 0) return;
 
         let currentIndex = 0;
-        let isAnimating = false;
+        let intervalId: NodeJS.Timeout | null = null;
+        let isTweening = false; // Prevents continuous trigger flickers during touch holds
 
-        // set initial positions
+        // Set initial positions
         gsap.set(banners, { xPercent: 100 });
         gsap.set(banners[0], { xPercent: 0 });
 
-        const playNext = () => {
-          if (isAnimating) return;
-          isAnimating = true;
+        const playNext = (direction: number) => {
+          // 1. Block continuous triggering while a transition is processing
+          if (isTweening) return;
+
+          let nextIndex = currentIndex + direction;
+          if (nextIndex < 0) nextIndex = banners.length - 1;
+          if (nextIndex >= banners.length) nextIndex = 0;
+
+          // Prevent animating to the exact same slide
+          if (nextIndex === currentIndex) return;
+
+          isTweening = true; // Lock interactions during execution
 
           const currentSlide = banners[currentIndex];
-
-          const nextIndex = (currentIndex + 1) % banners.length;
           const nextSlide = banners[nextIndex];
 
-          // getting next slide positioned properly before the animation starts
-          // this is usefull if the banner is already translated
-          gsap.set(nextSlide, { xPercent: 100 });
+          const currentEndMove = direction === 1 ? -100 : 100;
+          const nextStartMove = direction === 1 ? 100 : -100;
 
-          // the carousel animation
-          tl.to(currentSlide, {
-            xPercent: -100,
+          // Immediately update index before the animation fires
+          currentIndex = nextIndex;
+
+          // Pre-position the incoming slide cleanly without triggering flash frames
+          gsap.set(nextSlide, { xPercent: nextStartMove });
+
+          // Use overwrite to kill conflicting animations on these elements cleanly
+          gsap.to(currentSlide, {
+            xPercent: currentEndMove,
             duration: 0.5,
             ease: "power2.inOut",
-          }).to(
-            nextSlide,
-            {
-              xPercent: 0,
-              duration: 0.5,
-              ease: "power2.inOut",
-              onComplete: () => {
-                isAnimating = false;
-                currentIndex = nextIndex;
-              },
+            overwrite: "auto",
+          });
+
+          gsap.to(nextSlide, {
+            xPercent: 0,
+            duration: 0.5,
+            ease: "power2.inOut",
+            overwrite: "auto",
+            onComplete: () => {
+              isTweening = false; // Release the interaction lock safely on completion
             },
-            "<",
-          );
+          });
         };
 
-        const intervalId = setInterval(playNext, interval); // interval per slide
+        const startAutoplay = () => {
+          intervalId = setInterval(() => {
+            playNext(1);
+          }, interval);
+        };
 
-        return () => clearInterval(intervalId); //clean up
+        const resetAutoplay = () => {
+          if (intervalId) clearInterval(intervalId);
+          startAutoplay();
+        };
+
+        const obs = Observer.create({
+          target: containerRef.current,
+          type: "touch,pointer",
+          onLeft: () => {
+            if (isTweening) return; // Prevent interval scrubbing during continuous touch hold
+            playNext(1);
+            resetAutoplay();
+          },
+          onRight: () => {
+            if (isTweening) return;
+            playNext(-1);
+            resetAutoplay();
+          },
+          tolerance: 50, // Increased slightly to filter out micro-jitters from fingers
+          preventDefault: false,
+          lockAxis: true,
+        });
+
+        startAutoplay();
+
+        return () => {
+          if (intervalId) clearInterval(intervalId);
+          obs.kill();
+        };
       });
     },
     { scope: containerRef },

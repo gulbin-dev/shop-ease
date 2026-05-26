@@ -1,8 +1,8 @@
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/all";
+import { ScrollTrigger, Observer } from "gsap/all";
 import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, Observer);
 
 const mediaQueries = {
   desktop: "(min-width: 1024px)",
@@ -10,4 +10,4 @@ const mediaQueries = {
   mobile: "(max-width: 767px)",
 };
 
-export { gsap, ScrollTrigger, useGSAP, mediaQueries };
+export { gsap, useGSAP, mediaQueries, ScrollTrigger, Observer };
