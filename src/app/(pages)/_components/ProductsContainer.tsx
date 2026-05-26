@@ -1,10 +1,12 @@
 "use client";
 import { use, useRef } from "react";
-import { Product } from "@utils/types";
+import { Product, Response } from "@utils/types";
 import Image from "next/image";
 import useCarouselAnimation from "@hooks/useCarouselAnimation";
 import { RatingIcon } from "@utils/tabler-icons";
 import { PrimaryButton } from "@/components/UI/Button";
+import { Suspense } from "react";
+import ComponentError from "@components/UI/ComponentError";
 
 interface CardProductProp {
   thumbnail: string;
@@ -13,12 +15,19 @@ interface CardProductProp {
 }
 
 const CardProduct = ({ thumbnail, title, price }: CardProductProp) => {
+  console.log(thumbnail);
+
+  const sourceNormalizer = thumbnail.includes("https")
+    ? thumbnail
+    : `https://${thumbnail}`;
+
   return (
     <div className="card-product absolute inset-0 flex flex-col tablet:relative">
       <Image
-        src={thumbnail}
+        src={sourceNormalizer}
         alt={title}
-        width={300}
+        onError={(e) => (e.currentTarget.src = "/image-not-found.webp")}
+        width={272}
         height={300}
         className="object-cover mx-auto max-h-37.5 min-h-37.5"
       />
@@ -50,29 +59,39 @@ export default function ProductsContainer({
   products,
   slice,
 }: {
-  products: Promise<Product[]>;
+  products: Promise<Response<Product>>;
   slice: number[];
 }) {
-  const productsList = use(products);
+  const response = use(products);
   const containerRef = useRef<HTMLDivElement>(null);
-
+  console.log(response);
   useCarouselAnimation({
     containerRef,
     listOfCards: ".card-product",
     interval: 5000,
   });
+  if (response.error.state)
+    return (
+      <ComponentError
+        type={response.error.type}
+        status={response.error.status}
+        message={response.error.message}
+      />
+    );
   return (
     <div
       ref={containerRef}
       className="relative pt-px flex overflow-hidden min-h-81 tablet:grid tablet:grid-cols-5 tablet:grid-flow-row gap-3"
     >
-      {productsList.slice(slice[0], slice[1]).map((product) => (
-        <CardProduct
-          key={product.id}
-          thumbnail={product.images[0]}
-          title={product.title}
-          price={product.price}
-        />
+      {response.data.slice(slice[0], slice[1]).map((product) => (
+        <Suspense key={product.id} fallback={<div>Loading...</div>}>
+          <CardProduct
+            key={product.id}
+            thumbnail={product.images[0]}
+            title={product.title}
+            price={product.price}
+          />
+        </Suspense>
       ))}
     </div>
   );

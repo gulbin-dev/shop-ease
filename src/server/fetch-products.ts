@@ -6,8 +6,8 @@ export const fetchProducts = async () => {
   try {
     res = await fetch("https://api.escuelajs.co/api/v1/products");
     if (!res.ok) {
-      throw {
-        data: undefined,
+      return {
+        data: [],
         error: {
           state: true,
           type: "HTTP_ERROR",
@@ -17,11 +17,19 @@ export const fetchProducts = async () => {
       };
     }
     const data: Product[] = await res.json();
-    return data;
+    return {
+      data: data,
+      error: {
+        state: false,
+        type: undefined,
+        status: undefined,
+        message: undefined,
+      },
+    };
   } catch (err: unknown) {
     const error = err as Error;
-    throw {
-      data: undefined,
+    return {
+      data: [],
       error: {
         state: true,
         type: `${error.name}`,
