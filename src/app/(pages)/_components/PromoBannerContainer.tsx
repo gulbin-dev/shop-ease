@@ -29,25 +29,22 @@ export default function PromoBannerContainer() {
   return (
     <div
       ref={containerRef}
-      className="promo-banner-container mt-4 relative min-h-25 overflow-hidden tablet:grid tablet:grid-rows-1 tablet:grid-flow-col tablet:gap-3"
+      className="promo-banner-container mt-4 px-3 mx-3 relative min-h-25 overflow-hidden tablet:grid tablet:grid-rows-1 tablet:grid-flow-col tablet:gap-3"
     >
       <PromoBanner styleProp="bg-secondary text-foreground-white">
         <p>
-          {" "}
           ENJOY <span className="text-accent-yellow">BIGGER CASHBACK!</span> GET
           UP TO <span className="text-accent-yellow">8%</span> BACK
         </p>
       </PromoBanner>
       <PromoBanner styleProp="bg-accent-yellow text-black">
         <p>
-          {" "}
           EXCLUSIVE WELCOME GIFT:{" "}
           <span className="text-secondary">₱100 OFF!</span>
         </p>
       </PromoBanner>
       <PromoBanner styleProp="bg-secondary text-foreground-white">
         <p>
-          {" "}
           PAYDAY MEGA SALE: UP TO{" "}
           <span className="text-accent-yellow">70% OFF!</span>
         </p>
