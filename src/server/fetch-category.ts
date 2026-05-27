@@ -12,7 +12,7 @@ export const fetchcategory = async () => {
           state: true,
           type: "HTTP_ERROR",
           status: res.status,
-          message: "Failed to fetch data, please try again",
+          message: "Failed to fetch data, please try again later.",
         },
       };
     }
@@ -32,9 +32,9 @@ export const fetchcategory = async () => {
       data: [],
       error: {
         state: true,
-        type: `${error.name}`,
+        type: error.name,
         status: res?.status,
-        message: `${error.message}, please try again`,
+        message: `${error.message}, please try again later.`,
       },
     };
   }
