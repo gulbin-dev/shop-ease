@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+
+  "pull-request-header": "## Release Please 🤖\n\n",
+  "pull-request-footer": "---\n_Generated automatically by Release Please bot. 🤖_",
+  "packages": {
+    ".": {
+      "release-type": "node",
+      "changelog-sections": [
+        { "type": "feat", "section": "✨ Features" },
+        { "type": "fix", "section": "🐛 Bug Fixes" },
+        { "type": "docs", "section": "📝 Documentation" },
+        { "type": "perf", "section": "⚡ Performance Improvements" },
+        { "type": "refactor", "section": "♻️ Code Refactoring" },
+        { "type": "test", "section": "🧪 Tests & Coverage" },
+        { "type": "chore", "section": "⚙️ Chores & Maintenance" },
+        { "type": "style", "section": "🎨 Code Style & Formatting" }
+      ]
+    }
+  }
+}
