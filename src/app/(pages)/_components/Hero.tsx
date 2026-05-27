@@ -22,10 +22,12 @@ const RowContainer = ({ children }: { children: React.ReactNode }) => {
     </div>
   );
 };
+
 export default function Hero() {
   useGSAP(() => {});
   return (
-    <div className="mt-4 relative grid grid-cols-[33.33%_33.33%_1fr] grid-rows-1">
+    <div className="mt-4 relative grid grid-cols-[33.33%_33.33%_1fr] grid-rows-1 overflow-hidden">
+      {/* this is for hero-image background blocks */}
       <div className="absolute flex flex-col gap-2 col-start-1 col-span-full row-start-1 min-h-40">
         <RowContainer>
           <Blocks size={7} />

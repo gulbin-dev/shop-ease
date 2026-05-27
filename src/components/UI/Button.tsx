@@ -25,7 +25,7 @@ export const SecondaryButton = ({
   return (
     <Link
       href=""
-      className="not-first:place-self-center px-3 py-1 text-size-md font-bold bg-primary border-4 border-secondary rounded-2xl $"
+      className="place-self-center px-3 py-1 text-size-md font-bold bg-primary border-4 text-center border-secondary rounded-2xl $"
     >
       {children}
     </Link>
