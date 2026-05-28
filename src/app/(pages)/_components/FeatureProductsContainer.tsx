@@ -32,7 +32,7 @@ export default function FeatureProductsContainer({
   return (
     <div
       ref={containerRef}
-      className="relative pt-px flex overflow-hidden min-h-81 tablet:grid tablet:grid-cols-5 tablet:grid-flow-row gap-3"
+      className="relative pt-px flex overflow-hidden min-h-76.5 tablet:grid tablet:grid-cols-5 tablet:grid-flow-row gap-3"
     >
       {response.data.slice(slice[0], slice[1]).map((product) => (
         <CardProduct
