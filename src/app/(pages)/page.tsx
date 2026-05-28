@@ -10,6 +10,8 @@ import { PrimaryButton } from "@components/UI/Button";
 import { Suspense } from "react";
 import { SecondaryButton } from "@components/UI/Button";
 import SearchContainer from "@components/SearchContainer";
+import FeaturedLoader from "@/components/UI/Loader/FeaturedLoader";
+import CategoryCardLoader from "@/components/UI/Loader/CategoryCardLoader";
 
 export default function HomePage() {
   const getProducts = fetchProducts();
@@ -32,7 +34,7 @@ export default function HomePage() {
       <section className="mt-10">
         <SectionHeader>Top Products</SectionHeader>
         <div className="px-3 mt-4">
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<FeaturedLoader />}>
             <FeatureProductsContainer
               products={getProducts}
               slice={topProductSlice}
@@ -43,7 +45,7 @@ export default function HomePage() {
       <section className="mt-10">
         <SectionHeader>New Arrivals</SectionHeader>
         <div className="px-3 mt-4">
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<FeaturedLoader />}>
             <FeatureProductsContainer
               products={getProducts}
               slice={newProductSlice}
@@ -54,7 +56,7 @@ export default function HomePage() {
         <div className="mt-10">
           <SectionHeader>Categories</SectionHeader>
           <div className="px-3 mt-6">
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<CategoryCardLoader />}>
               <div className="flex flex-col gap-3">
                 <CardCategoryContainer category={getCategories} />
                 <SecondaryButton>See more</SecondaryButton>

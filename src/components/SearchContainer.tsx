@@ -1,12 +1,42 @@
 "use client";
 
 import { SearchIcon } from "@utils/tabler-icons";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, Suspense } from "react";
 import { gsap, useGSAP } from "@utils/gsap/gsap";
 import useSWR from "swr";
 import { fetcher } from "@utils/SWR/fetcher";
 import { Product } from "@/utils/types";
 import CardProduct from "@components/CardProduct";
+import SearchCardLoader from "./UI/Loader/SearchCardLoader";
+
+const SearchResultsList = ({ searchText }: { searchText: string | null }) => {
+  const { data } = useSWR(
+    searchText ? `/api/search?title=${searchText}` : null,
+    (url) => fetcher<Product>(url),
+    {
+      revalidateOnFocus: false,
+      suspense: true,
+    },
+  );
+  if (data?.data?.length === 0)
+    return (
+      <p className="text-center col-span-2 py-4 text-black dark:text-white ">
+        No results found
+      </p>
+    );
+  return (
+    <>
+      {data?.data?.map((product) => (
+        <CardProduct
+          key={product.id}
+          thumbnail={product.images[0]}
+          title={product.title}
+          price={product.price}
+        />
+      ))}
+    </>
+  );
+};
 
 export default function SearchContainer() {
   const [isButtonClicked, setIsButtonClicked] = useState(false);
@@ -18,14 +48,6 @@ export default function SearchContainer() {
   useEffect(() => {
     document.body.style.overflow = isButtonClicked ? "hidden" : "auto";
   }, [isButtonClicked]);
-
-  const { data } = useSWR(
-    searchText ? `/api/search?title=${searchText}` : null,
-    (url) => fetcher<Product>(url),
-    {
-      revalidateOnFocus: false,
-    },
-  );
 
   // Open modal using native HTML5 API
   const handleOpen = () => {
@@ -110,14 +132,9 @@ export default function SearchContainer() {
           />
 
           <div className="mt-3 overflow-y-auto flex-1 relative grid grid-cols-2 grid-flow-row gap-1.5">
-            {data?.data.map((product) => (
-              <CardProduct
-                key={product.id}
-                thumbnail={product.images[0]}
-                title={product.title}
-                price={product.price}
-              />
-            ))}
+            <Suspense fallback={<SearchCardLoader />}>
+              <SearchResultsList searchText={searchText} />
+            </Suspense>
           </div>
         </div>
       </dialog>
