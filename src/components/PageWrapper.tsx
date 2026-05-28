@@ -4,7 +4,9 @@ import { Provider } from "react-redux";
 import { store } from "@/utils/redux-toolkit/store";
 import { useAppSelector } from "@/utils/redux-toolkit/typed-hooks";
 import { RootState } from "@/utils/redux-toolkit/store";
-import { Suspense, useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
+import { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 // creates a no-op subscribe function for useSyncExternalStore,
 // as we don't need to subscribe to any external store for this component
@@ -36,9 +38,14 @@ export default function PageWrapper({
 }) {
   return (
     <Provider store={store}>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Rehydrated>{children}</Rehydrated>
-      </Suspense>
+      <Rehydrated>
+        <SkeletonTheme
+          baseColor="var(--color-skeleton-base)"
+          highlightColor="var(--color-skeleton-highlight)"
+        >
+          {children}
+        </SkeletonTheme>
+      </Rehydrated>
     </Provider>
   );
 }
