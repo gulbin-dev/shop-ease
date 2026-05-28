@@ -20,6 +20,8 @@
   --color-accent-pink: #fd07a2;
   --color-accent-yellow: #f9dd48;
   --color-emphasis: #ecbdbd;
+  --color-skeleton-base: #919eb9;
+  --color-skeleton-highlight: #1749af;
   --text-size-sm: clamp(1rem, 3vw, 1.25rem);
   --text-size-md: clamp(1.5rem, 3vw, 1.75rem);
   --text-size-lg: clamp(2rem, 3vw, 2.25rem);
@@ -33,10 +35,6 @@
   --color-accent-yellow: #ebc26d;
   --color-secondary-foreground: var(--color-foreground-white);
   --color-secondary-button: #1c1f37;
-}
-
-@layer base {
-  body {
-    font-family: Arial, Helvetica, sans-serif;
-  }
+  --color-skeleton-base: #d1d6df;
+  --color-skeleton-highlight: #4077e6;
 }
