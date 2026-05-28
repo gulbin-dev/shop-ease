@@ -6,7 +6,8 @@ import { use } from "react";
 import Link from "next/link";
 import ComponentError from "@components/UI/ComponentError";
 import { useState } from "react";
-
+import { sourceNormalizer } from "@utils/image-source-normalizer";
+import useImageSourceChecker from "@hooks/useImageSourceChecker";
 const CardCategory = ({
   name,
   image,
@@ -17,27 +18,29 @@ const CardCategory = ({
   slug: string;
 }) => {
   const [imgSrc, setImgSrc] = useState(image);
-  const sourceNormalizer = imgSrc.includes("https")
-    ? imgSrc
-    : imgSrc.includes("image-not-found.webp")
-      ? imgSrc
-      : `https://${imgSrc}`;
+  const [isSvg, setIsSvg] = useState(false);
+  useImageSourceChecker({ src: imgSrc, setIsSvg });
+  const imageSource = sourceNormalizer(imgSrc);
   return (
     <Link
       href=""
-      className="relative rounded-2xl bg-secondary min-h-20 flex flex-col gap-1 pb-2"
+      className="relative rounded-2xl bg-secondary flex flex-col gap-1 pb-2"
     >
-      <Image
-        src={sourceNormalizer}
-        alt={name}
-        onError={(e) => {
-          e.currentTarget.onerror = null;
-          setImgSrc("/image-not-found.webp");
-        }}
-        width={160}
-        height={160}
-        className="object-contain rounded-t-2xl min-h-20"
-      />
+      <div className="relative min-h-20">
+        <Image
+          src={imageSource}
+          alt={name}
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            setImgSrc("/image-not-found.webp");
+          }}
+          fill
+          unoptimized={isSvg}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover rounded-t-2xl min-h-20"
+        />
+      </div>
+
       <h3 className="text-size-sm  font-bold text-white text-center">{name}</h3>
     </Link>
   );

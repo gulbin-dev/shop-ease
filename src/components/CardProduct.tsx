@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import { RatingIcon } from "@utils/tabler-icons";
+import { sourceNormalizer } from "@utils/image-source-normalizer";
+import useImageSourceChecker from "@/hooks/useImageSourceChecker";
 
 interface CardProductProp {
   thumbnail: string;
@@ -20,32 +22,29 @@ export default function CardProduct({
   isFeatured,
 }: CardProductProp) {
   const [imgSrc, setImgSrc] = useState(thumbnail);
-
-  const sourceNormalizer = imgSrc.includes("https")
-    ? imgSrc
-    : imgSrc.includes("image-not-found.webp")
-      ? imgSrc
-      : `https://${imgSrc}`;
-
+  const [isSvg, setIsSvg] = useState(false);
+  useImageSourceChecker({ src: imgSrc, setIsSvg });
+  const imageSource = sourceNormalizer(imgSrc);
   return (
     <div
       className={`card-product flex flex-col ${isFeatured ? "absolute inset-0 tablet:relative" : "relative"}`}
     >
       <div className={`relative ${isFeatured ? "min-h-37.5" : "min-h-25"}`}>
         <Image
-          src={sourceNormalizer}
+          src={imageSource}
           alt={title}
           onError={(e) => {
             e.currentTarget.onerror = null;
             setImgSrc("/image-not-found.webp");
           }}
           fill
+          unoptimized={isSvg}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className={`object-cover mx-auto max-h-37.5 rounded-t-2xl`}
         />
       </div>
       <div
-        className={`bg-secondary p-3 text-white grid grid-rows-[auto_auto_1fr_auto] rounded-b-2xl gap-1.5 ${isFeatured ? "min-h-38" : "min-h-24 "}`}
+        className={`bg-secondary p-3 text-white grid grid-rows-[auto_auto_1fr] rounded-b-2xl gap-1.5 ${isFeatured ? "min-h-30" : "min-h-22"}`}
       >
         <h3
           className={`row-start-1 font-bold line-clamp-2 ${isFeatured ? "text-size-md" : "text-size-sm"}`}
