@@ -32,6 +32,11 @@ const nextConfig: NextConfig = {
         hostname: "laceon.in",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+        pathname: "/**",
+      },
     ],
   },
 };
