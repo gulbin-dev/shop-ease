@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.1](https://github.com/gulbin-dev/shop-ease/compare/v1.1.0...v1.1.1) (2026-05-29)
+
+
+### Bug Fixes
+
+* fix issue on not bumping tag release after merge on master branch  Release-As: 1.1.1 ([cdeb273](https://github.com/gulbin-dev/shop-ease/commit/cdeb27339254c705d0b1e25a23d2114c76c084e5))
+
+
+### Styles
+
+* improve UI on tablet size screens ([cdeb273](https://github.com/gulbin-dev/shop-ease/commit/cdeb27339254c705d0b1e25a23d2114c76c084e5))
+
 ## [1.1.0](https://github.com/gulbin-dev/shop-ease/compare/v1.0.0...v1.1.0) (2026-05-29)
 
 
