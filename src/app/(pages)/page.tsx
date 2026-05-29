@@ -19,12 +19,12 @@ export default function HomePage() {
   const getCategories = fetchcategory();
   // since the third party API does not provide sorting or skipping,
   // I have to make a workaround
-  const topProductSlice = [0, 5];
-  const newProductSlice = [5, 10];
+  const topProductSlice = [0, 6];
+  const newProductSlice = [6, 12];
   return (
     <PageContentContainer>
-      <section className="max-w-180 pt-1 text-secondary-foreground">
-        <h1 className="text-size-xl font-bold mt-2 px-3">
+      <section className="max-w-180 pt-1 text-secondary-foreground grid grid-cols-3 grid-flow-row auto-rows-[60px] gap-2 items-center">
+        <h1 className="text-size-xl font-bold mt-5 px-3 col-start-1 col-span-3 row-start-1 row-span-2 z-3">
           Top Online Shopping Store with ShopEase
         </h1>
         <SearchContainer />
@@ -65,7 +65,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col bg-primary border-4 border-secondary text-black dark:text-white rounded-2xl text-size-md mx-3 p-3">
+        <div className="mt-8 flex flex-col bg-primary border-4 border-secondary text-black dark:text-white rounded-2xl text-size-md mx-3 p-3 tablet:max-w-60 tablet:mx-auto">
           <p>
             Get Alerted Before the Best Deals{" "}
             <span className="text-secondary dark:text-accent-yellow font-bold">
