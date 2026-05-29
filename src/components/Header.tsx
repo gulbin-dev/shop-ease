@@ -72,7 +72,7 @@ export default function Header() {
       <header
         data-theme={theme}
         ref={headerRef}
-        className="w-full max-h-12.5 relative top-0 left-0 text-white bg-secondary z-31"
+        className="w-full max-h-12.5 relative top-0 left-0 text-white bg-secondary z-51"
       >
         <div className="flex gap-3 justify-between items-center max-w-180">
           <Link href="/" className="col-start-1 col-span-3 bg-primary min-w-22">
@@ -100,7 +100,7 @@ export default function Header() {
       <div
         data-theme={theme}
         ref={sideBarRef}
-        className="bg-secondary text-white h-screen w-screen overflow-hidden fixed top-0 left-0 z-2 pt-15 px-3"
+        className="bg-secondary text-white h-screen w-screen overflow-hidden fixed top-0 left-0 z-50 pt-15 px-3"
         style={{
           transform: "translateX(100%)",
           visibility: "hidden",

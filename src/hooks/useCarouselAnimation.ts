@@ -3,12 +3,14 @@ import { RefObject } from "react";
 
 export default function useCarouselAnimation({
   containerRef,
-  listOfCards,
-  interval,
+  config,
 }: {
   containerRef: RefObject<HTMLDivElement | null>;
-  listOfCards: string; // a class name of the card
-  interval: number;
+  config: {
+    shouldAnimateOnTablet: boolean; //
+    listOfCards: string; // a class name of the cards
+    interval: number; // duration per card on view
+  };
 }) {
   useGSAP(
     () => {
@@ -16,10 +18,9 @@ export default function useCarouselAnimation({
 
       mm.add(mediaQueries, (context) => {
         const { mobile } = context.conditions ?? {};
-        if (!mobile) return;
 
         const banners = gsap.utils.toArray<HTMLElement>(
-          listOfCards,
+          config.listOfCards,
           containerRef.current,
         );
         if (banners.length === 0) return;
@@ -29,11 +30,12 @@ export default function useCarouselAnimation({
         let isTweening = false; // Prevents continuous trigger flickers during touch holds
 
         // Set initial positions
-        gsap.set(banners, { xPercent: 100 });
+        if (mobile || config.shouldAnimateOnTablet)
+          gsap.set(banners, { xPercent: 100 });
+
         gsap.set(banners[0], { xPercent: 0 });
 
         const playNext = (direction: number) => {
-          // 1. Block continuous triggering while a transition is processing
           if (isTweening) return;
 
           let nextIndex = currentIndex + direction;
@@ -55,7 +57,8 @@ export default function useCarouselAnimation({
           currentIndex = nextIndex;
 
           // Pre-position the incoming slide cleanly without triggering flash frames
-          gsap.set(nextSlide, { xPercent: nextStartMove });
+          if (mobile || config.shouldAnimateOnTablet)
+            gsap.set(nextSlide, { xPercent: nextStartMove });
 
           // Use overwrite to kill conflicting animations on these elements cleanly
           gsap.to(currentSlide, {
@@ -79,7 +82,7 @@ export default function useCarouselAnimation({
         const startAutoplay = () => {
           intervalId = setInterval(() => {
             playNext(1);
-          }, interval);
+          }, config.interval);
         };
 
         const resetAutoplay = () => {
@@ -92,20 +95,26 @@ export default function useCarouselAnimation({
           type: "touch,pointer",
           onLeft: () => {
             if (isTweening) return; // Prevent interval scrubbing during continuous touch hold
-            playNext(1);
-            resetAutoplay();
+            if (mobile || config.shouldAnimateOnTablet) {
+              playNext(1);
+              resetAutoplay();
+            }
           },
           onRight: () => {
             if (isTweening) return;
-            playNext(-1);
-            resetAutoplay();
+            if (mobile || config.shouldAnimateOnTablet) {
+              playNext(-1);
+              resetAutoplay();
+            }
           },
           tolerance: 50, // Increased slightly to filter out micro-jitters from fingers
           preventDefault: false,
           lockAxis: true,
         });
 
-        startAutoplay();
+        if (mobile || config.shouldAnimateOnTablet) {
+          startAutoplay();
+        }
 
         return () => {
           if (intervalId) clearInterval(intervalId);
