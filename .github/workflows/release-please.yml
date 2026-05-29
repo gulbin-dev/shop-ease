@@ -1,6 +1,9 @@
 name: release-please
 
 on:
+  push:
+    branches:
+      - master
   pull_request:
     branches:
       - master
@@ -13,7 +16,6 @@ permissions:
 
 jobs:
   release-stable:
-    if: github.ref_name == 'master' || github.base_ref == 'master'
     runs-on: ubuntu-latest
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
@@ -30,14 +32,16 @@ jobs:
 
   deploy-stable:
     needs: release-stable
-    if: github.ref_name == 'master' && needs.release-stable.outputs.release_created
+    # Simplified: Only deploys when release-please confirms a new release was published on master
+    if: github.event_name == 'push' && needs.release-stable.outputs.release_created
     runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - run: npm install -g vercel@latest
-      - run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-      - run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-      - run: vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      - run: vercel pull --yes --environment=production
+      - run: vercel build --prod
+      - run: vercel --prod
