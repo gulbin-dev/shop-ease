@@ -1,9 +1,6 @@
 name: release-please
 
 on:
-  push:
-    branches:
-      - master
   pull_request:
     branches:
       - master
@@ -42,6 +39,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: npm install -g vercel@latest
-      - run: vercel pull --yes --environment=production
-      - run: vercel build --prod
-      - run: vercel --prod
+      - run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      - run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - run: vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
