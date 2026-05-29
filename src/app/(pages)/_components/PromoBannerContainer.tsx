@@ -11,7 +11,7 @@ const PromoBanner = ({
 }>) => {
   return (
     <div
-      className={`${styleProp} promo-banner absolute inset-0 p-3 text-size-lg rounded-2xl font-bold items-center justify-center tablet:max-w-40 tablet:relative`}
+      className={`${styleProp} flex promo-banner absolute inset-0 p-3 text-size-lg min-w-10 rounded-2xl font-bold items-center justify-center tablet:w-full tablet:text-size-md tablet:mx-auto`}
     >
       {children}
     </div>
@@ -22,14 +22,17 @@ export default function PromoBannerContainer() {
   const containerRef = useRef<HTMLDivElement>(null);
   useCarouselAnimation({
     containerRef,
-    listOfCards: ".promo-banner",
-    interval: 3000,
+    config: {
+      shouldAnimateOnTablet: true,
+      listOfCards: ".promo-banner",
+      interval: 3000,
+    },
   });
-
+  console.log("log per run");
   return (
     <div
       ref={containerRef}
-      className="promo-banner-container mt-4 px-3 mx-3 relative min-h-25 overflow-hidden tablet:grid tablet:grid-rows-1 tablet:grid-flow-col tablet:gap-3"
+      className="promo-banner-container row-start-4 row-span-3 col-start-1 col-span-3 p-3 mx-3 relative min-h-25 overflow-hidden z-1 mobile-md:mx-auto mobile-md:w-[90vw] tablet:max-w-45 tablet:mx-3 tablet:bg-white tablet:shadow-[0_0_25px_40px] tablet:shadow-white "
     >
       <PromoBanner styleProp="bg-secondary text-foreground-white">
         <p>
