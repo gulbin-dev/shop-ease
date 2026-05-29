@@ -15,7 +15,7 @@ export default function NavLinks({
 
   return (
     <nav>
-      <ul className="flex flex-col tablet:flex-row items-end gap-4 text-size-md">
+      <ul className="flex flex-col items-end gap-4 text-size-md">
         <li>
           <Link href="/" onClick={() => updateState?.(false)}>
             Home

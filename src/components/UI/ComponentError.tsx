@@ -10,7 +10,7 @@ export default function ComponentError({ type, status, message }: ErrorProp) {
       <h3 className="text-size-md font-bold">
         {type} {status}
       </h3>
-      <p>{message}</p>
+      <p className="mt-3">{message}</p>
     </div>
   );
 }

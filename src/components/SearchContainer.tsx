@@ -92,13 +92,15 @@ export default function SearchContainer() {
 
   return (
     <>
-      <button
-        className="flex gap-1.5 bg-accent-pink rounded-2xl text-black text-size-sm px-3 py-1 min-w-[80vw] mt-4 text-start mx-3"
-        onClick={handleOpen}
-        aria-haspopup="dialog"
-      >
-        <SearchIcon size={20} stroke={2} /> Black T-shirt
-      </button>
+      <div className="px-3 row-start-3 col-start-1 col-span-3 z-2">
+        <button
+          className="flex gap-1.5 w-full bg-accent-pink rounded-2xl text-black text-size-sm px-3 py-1 text-start max-w-47"
+          onClick={handleOpen}
+          aria-haspopup="dialog"
+        >
+          <SearchIcon size={20} stroke={2} /> Black T-shirt
+        </button>
+      </div>
 
       <dialog
         ref={modalRef}
@@ -131,7 +133,7 @@ export default function SearchContainer() {
             onChange={(e) => setSearchText(e.target.value)}
           />
 
-          <div className="mt-3 overflow-y-auto flex-1 relative grid grid-cols-2 grid-flow-row gap-1.5">
+          <div className="mt-3 overflow-y-auto flex-1 relative grid grid-cols-2 grid-flow-row gap-1.5 tablet:grid-cols-3">
             <Suspense fallback={<SearchCardLoader />}>
               <SearchResultsList searchText={searchText} />
             </Suspense>

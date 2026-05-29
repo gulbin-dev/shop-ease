@@ -62,7 +62,7 @@ export default function CardCategoryContainer({
       />
     );
   return (
-    <div className="grid grid-cols-2 grid-auto-rows gap-3">
+    <div className="grid grid-cols-2 grid-auto-rows gap-3 tablet:grid-cols-3">
       {response.data.slice(0, 6).map((category: Category) => (
         <CardCategory
           key={category.id}
