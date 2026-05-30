@@ -11,7 +11,7 @@ export default function PageContentContainer({
   return (
     <main
       data-theme={theme}
-      className="bg-primary text-secondary-foreground pb-10"
+      className="bg-primary text-secondary-foreground pb-10 flex flex-col items-center transition-colors duration-300"
     >
       {children}
     </main>
