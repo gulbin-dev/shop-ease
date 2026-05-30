@@ -28,6 +28,7 @@
   --text-size-xl: clamp(2.5rem, 3vw, 3rem);
   --breakpoint-mobile-md: 430px;
   --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 992px;
 }
 
 [data-theme="dark"] {
