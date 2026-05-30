@@ -17,7 +17,7 @@ export default function useCarouselAnimation({
       const mm = gsap.matchMedia();
 
       mm.add(mediaQueries, (context) => {
-        const { mobile } = context.conditions ?? {};
+        const { mobile, desktop } = context.conditions ?? {};
 
         const banners = gsap.utils.toArray<HTMLElement>(
           config.listOfCards,
@@ -30,7 +30,7 @@ export default function useCarouselAnimation({
         let isTweening = false; // Prevents continuous trigger flickers during touch holds
 
         // Set initial positions
-        if (mobile || config.shouldAnimateOnTablet)
+        if (mobile || (config.shouldAnimateOnTablet && !desktop))
           gsap.set(banners, { xPercent: 100 });
 
         gsap.set(banners[0], { xPercent: 0 });
@@ -57,7 +57,7 @@ export default function useCarouselAnimation({
           currentIndex = nextIndex;
 
           // Pre-position the incoming slide cleanly without triggering flash frames
-          if (mobile || config.shouldAnimateOnTablet)
+          if (mobile || (config.shouldAnimateOnTablet && !desktop))
             gsap.set(nextSlide, { xPercent: nextStartMove });
 
           // Use overwrite to kill conflicting animations on these elements cleanly
@@ -95,14 +95,14 @@ export default function useCarouselAnimation({
           type: "touch,pointer",
           onLeft: () => {
             if (isTweening) return; // Prevent interval scrubbing during continuous touch hold
-            if (mobile || config.shouldAnimateOnTablet) {
+            if (mobile || (config.shouldAnimateOnTablet && !desktop)) {
               playNext(1);
               resetAutoplay();
             }
           },
           onRight: () => {
             if (isTweening) return;
-            if (mobile || config.shouldAnimateOnTablet) {
+            if (mobile || (config.shouldAnimateOnTablet && !desktop)) {
               playNext(-1);
               resetAutoplay();
             }
@@ -112,7 +112,7 @@ export default function useCarouselAnimation({
           lockAxis: true,
         });
 
-        if (mobile || config.shouldAnimateOnTablet) {
+        if (mobile || (config.shouldAnimateOnTablet && !desktop)) {
           startAutoplay();
         }
 

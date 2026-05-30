@@ -22,7 +22,7 @@ const RowContainer = ({ children }: { children: React.ReactNode }) => {
 export default function Hero() {
   useGSAP(() => {});
   return (
-    <div className="mt-5 relative grid-cols-subgrid grid-rows-subgrid col-start-1 col-span-3 row-start-6 row-span-8 grid overflow-hidden tablet:row-start-3 tablet:row-span-9 tablet:mt-0">
+    <div className="mt-5 relative grid-cols-subgrid grid-rows-subgrid col-start-1 col-span-3 row-start-6 row-span-8 grid overflow-hidden tablet:row-start-3 tablet:row-span-9 tablet:mt-0 desktop:row-start-4">
       {/* this is for hero-image background blocks */}
       <div className="absolute flex flex-col gap-2 col-start-1 col-span-full row-start-3 min-h-40 tablet:row-start-4 tablet:pb-3 tablet:row-span-full max-w-180">
         <RowContainer>

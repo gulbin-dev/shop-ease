@@ -92,29 +92,36 @@ export default function SearchContainer() {
 
   return (
     <>
-      <div className="px-3 row-start-3 col-start-1 col-span-3 z-2">
+      <div className="px-3 row-start-3 col-start-1 col-span-3 z-2 mt-5 tablet:mt-0">
         <button
-          className="flex gap-1.5 w-full bg-accent-pink rounded-2xl text-black text-size-sm px-3 py-1 text-start max-w-47"
+          className="w-full bg-accent-pink rounded-2xl text-black text-size-sm px-3 py-1 text-start max-w-47 desktop:py-2 desktop:max-w-65"
           onClick={handleOpen}
           aria-haspopup="dialog"
+          aria-label="Search items"
         >
-          <SearchIcon size={20} stroke={2} /> Black T-shirt
+          <span className="flex gap-1.5" aria-hidden>
+            <SearchIcon size={20} stroke={2} /> Black T-shirt
+          </span>
         </button>
+        <span className="sr-only" aria-live="polite">
+          {!isButtonClicked && "Search dialog is close"}
+        </span>
       </div>
 
       <dialog
+        id="dialogSearch"
         ref={modalRef}
         onCancel={(e) => {
           e.preventDefault(); // Stop native instant close so GSAP can animate out
           handleClose();
         }}
         onClick={handleClose}
-        className="fixed inset-0 z-1 h-dvh m-0 max-w-none w-screen max-h-dvh bg-transparent text-white backdrop:bg-black/50 overflow-hidden"
+        className="fixed inset-0 z-1 h-dvh m-0 max-w-none w-screen max-h-dvh bg-transparent text-white backdrop:bg-black/50 overflow-hidden desktop:inset-25"
       >
         <div
           ref={innerContentRef}
           onClick={(e) => e.stopPropagation()}
-          className="bg-primary fixed inset-0 h-[102dvh] w-full pt-6 pb-3 px-3 flex flex-col will-change-transform"
+          className="bg-primary fixed inset-0 h-[102dvh] w-full pt-6 pb-3 px-3 flex flex-col will-change-transform desktop:max-w-140 desktop:mx-auto desktop:h-[85vh] desktop:bottom-0 desktop:top-auto desktop:rounded-2xl desktop:pt-3"
           style={{ transform: "translateY(102%)" }}
         >
           <button
@@ -133,7 +140,7 @@ export default function SearchContainer() {
             onChange={(e) => setSearchText(e.target.value)}
           />
 
-          <div className="mt-3 overflow-y-auto flex-1 relative grid grid-cols-2 grid-flow-row gap-1.5 tablet:grid-cols-3">
+          <div className="mt-3 overflow-y-auto flex-1 relative grid grid-cols-2 grid-flow-row gap-1.5 tablet:grid-cols-3 desktop:grid-cols-5">
             <Suspense fallback={<SearchCardLoader />}>
               <SearchResultsList searchText={searchText} />
             </Suspense>

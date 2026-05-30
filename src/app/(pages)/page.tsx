@@ -23,7 +23,7 @@ export default function HomePage() {
   const newProductSlice = [6, 12];
   return (
     <PageContentContainer>
-      <section className="max-w-180 pt-1 text-secondary-foreground grid grid-cols-3 grid-flow-row auto-rows-[60px] gap-2 items-center">
+      <section className="max-w-180 pt-1 text-secondary-foreground grid grid-cols-3 grid-flow-row auto-rows-[60px] gap-2 items-center transition-colors duration-300">
         <h1 className="text-size-xl font-bold mt-5 px-3 col-start-1 col-span-3 row-start-1 row-span-2 z-3">
           Top Online Shopping Store with ShopEase
         </h1>
@@ -31,7 +31,7 @@ export default function HomePage() {
         <PromoBannerContainer />
         <Hero />
       </section>
-      <section className="mt-10">
+      <section className="mt-10 max-w-180">
         <SectionHeader>Top Products</SectionHeader>
         <div className="px-3 mt-4">
           <Suspense fallback={<FeaturedLoader />}>
@@ -42,7 +42,7 @@ export default function HomePage() {
           </Suspense>
         </div>
       </section>
-      <section className="mt-10">
+      <section className="mt-10 max-w-180">
         <SectionHeader>New Arrivals</SectionHeader>
         <div className="px-3 mt-4">
           <Suspense fallback={<FeaturedLoader />}>

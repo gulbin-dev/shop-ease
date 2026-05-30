@@ -11,7 +11,7 @@ const PromoBanner = ({
 }>) => {
   return (
     <div
-      className={`${styleProp} flex promo-banner absolute inset-0 p-3 text-size-lg min-w-10 rounded-2xl font-bold items-center justify-center tablet:w-full tablet:text-size-md tablet:mx-auto`}
+      className={`${styleProp} promo-banner absolute inset-0 p-3 text-size-lg min-w-10 rounded-2xl font-bold items-center justify-center tablet:w-full tablet:text-size-md tablet:mx-auto desktop:max-w-40 desktop:relative`}
     >
       {children}
     </div>
@@ -32,7 +32,7 @@ export default function PromoBannerContainer() {
   return (
     <div
       ref={containerRef}
-      className="promo-banner-container row-start-4 row-span-3 col-start-1 col-span-3 p-3 mx-3 relative min-h-25 overflow-hidden z-1 mobile-md:mx-auto mobile-md:w-[90vw] tablet:max-w-45 tablet:mx-3 tablet:bg-white tablet:shadow-[0_0_25px_40px] tablet:shadow-white "
+      className="promo-banner-container row-start-4 row-span-3 col-start-1 col-span-3 p-3 mx-3 relative min-h-25 overflow-hidden z-1 mobile-md:mx-auto mobile-md:w-[90vw] tablet:max-w-45 tablet:mx-3 tablet:bg-white tablet:shadow-[0_0_25px_40px] tablet:shadow-white desktop:shadow-none desktop:bg-transparent desktop:max-w-[75%] desktop:flex desktop:gap-1.5"
     >
       <PromoBanner styleProp="bg-secondary text-foreground-white">
         <p>
