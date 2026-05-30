@@ -32,7 +32,7 @@ export default function CardProduct({
       <div className={`relative ${isFeatured ? "min-h-37.5" : "min-h-25"}`}>
         <Image
           src={imageSource}
-          alt={title}
+          alt=""
           onError={(e) => {
             e.currentTarget.onerror = null;
             setImgSrc("/image-not-found.webp");
@@ -52,14 +52,16 @@ export default function CardProduct({
           {title}
         </h3>
         <p className="row-start-2 flex items-center gap-2">
-          <span className="flex gap-0.5">
-            <RatingIcon size={16} color="yellow" />
-            <RatingIcon size={16} color="yellow" />
-            <RatingIcon size={16} color="yellow" />
-            <RatingIcon size={16} color="yellow" />
-            <RatingIcon size={16} color="yellow" />
+          <span className="flex gap-0.5" aria-label="5 star rating">
+            <RatingIcon size={16} color="yellow" aria-hidden />
+            <RatingIcon size={16} color="yellow" aria-hidden />
+            <RatingIcon size={16} color="yellow" aria-hidden />
+            <RatingIcon size={16} color="yellow" aria-hidden />
+            <RatingIcon size={16} color="yellow" aria-hidden />
           </span>
-          <span className="font-bold">5</span>
+          <span className="font-bold" aria-hidden>
+            5
+          </span>
         </p>
         <div className="row-start-3  flex gap-5 max-w-[90%] relative">
           <span className="font-bold text-size-md">${price}</span>
